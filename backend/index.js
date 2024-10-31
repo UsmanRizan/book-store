@@ -31,6 +31,21 @@ app.post("/books", async (req, res) => {
     }
 });
 
+// route to get all books
+app.get("/books", async (req, res) => {
+    try {
+        const books = await Book.find({});
+        return res.status(200).json({
+            count : books.length,
+            data : books
+        });
+        
+    } catch (error) {
+        console.error("Error occurred: ", error);
+        return res.status(500).send("Internal server error");
+        
+    }});
+
 mongoose.connect(mongoDBURL).then(() => {
     console.log("Connected to the database");
     app.listen(PORT, () => {
