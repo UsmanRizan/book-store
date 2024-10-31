@@ -44,7 +44,22 @@ app.get("/books", async (req, res) => {
         console.error("Error occurred: ", error);
         return res.status(500).send("Internal server error");
         
-    }});
+}});
+
+// route to get a book by id
+app.get("/books/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const book = await Book.findById(id);
+        if (!book) {
+            return res.status(404).send("Book not found");
+        }
+        return res.status(200).send(book);
+    } catch (error) {
+        console.error("Error occurred: ", error);
+        return res.status(500).send("Internal server error");
+    }
+});
 
 mongoose.connect(mongoDBURL).then(() => {
     console.log("Connected to the database");
